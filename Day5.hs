@@ -42,7 +42,7 @@ step pc mem outputs = if ins == halted then (mem, outputs) else
             JumpIfFalse -> step jumpIfFalse mem      outputs
             LessThan    -> step (pc+4)      lessThan outputs
             EqualTo     -> step (pc+4)      equalTo  outputs
-            e           -> error ("segfault " ++ (show (pc, e)))
+            e           -> error ("segfault " ++ show (pc, e))
     where
         ins = mem !! pc
         a = mem !! (pc + 1)
