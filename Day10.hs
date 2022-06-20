@@ -60,19 +60,19 @@ angle opp adj = -(atan2 adj opp)
 
 part2 :: String  -> [(Int, Int)]
 part2 s = take 200 $ blast initialSet
-    where 
+    where
         -- orderedAstroids = sortBy (compare `on` angleOf) astroids ++ newSet asteroids
         blast :: HashSet (Int,Int) -> [(Int, Int)]
         blast asteroidSet
             | H.null asteroidSet = []
             | otherwise = sortBy (compare `on` angleOf) (H.toList astroids) ++ blast (asteroidSet `H.difference` astroids)
-            where 
+            where
                 astroids = detected asteroidSet laserGunPost
 
         -- subtract old removed = filter (`notElem` removed) old
-        angleOf = fst . delta laserGunPost 
+        angleOf = fst . delta laserGunPost
         laserGunPost = snd $ part1 s
-        initialSet = H.delete laserGunPost $ asteroidmap s 
+        initialSet = H.delete laserGunPost $ asteroidmap s
 
 part1 :: String -> (Int, (Int, Int))
 part1 s = answer
@@ -87,13 +87,6 @@ detected :: HashSet (Int, Int) -> (Int, Int) -> HashSet (Int, Int)
 -- detected set a = [s | s <- H.toList set, not $ isBlocked set a s, a /= s]
 detected set a = H.filter (\s -> not $ isBlocked set a s && a /= s) set
 -- ones xxxx = 1 : ones (xxxx - 1)
-
-
-
--- (x1, y1) = (0, 0)
--- (x2, y2) = (9, 3)
-
--- cast (0, 0) (9, 3) = [(0, 0), (3, 1), (6, 2), (9, 3)]
 
 {-
 #.........
@@ -150,30 +143,6 @@ input = ".###.###.###.#####.#\n\
         \#####..#####.###.###\n\
         \####.#.############.\n\
         \####.#.#.##########."
-
-
-tamainput :: String
-tamainput = ".###.###.###.#####.#\n\
-        \#####.##.###..###..#\n\
-        \.#...####.###.######\n\
-        \######.###.####.####\n\
-        \#####..###..########\n\
-        \#.##.###########.#.#\n\
-        \##.###.######..#.#.#\n\
-        \.#.##.###.#.####.###\n\
-        \##..#.#.##.#########\n\
-        \###.#######.###..##.\n\
-        \###.###.##.##..####.\n\
-        \.##.####.##########.\n\
-        \#######.##.###.#####\n\
-        \#####.##..####.#####\n\
-        \##.#.#####.##.#.#..#\n\
-        \###########.#######.\n\
-        \#.##..#####.#####..#\n\
-        \#####..#####.###.###\n\
-        \####.#.############.\n\
-        \####.#.#.##########."
-
 
 input2 :: String
 input2 =

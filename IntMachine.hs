@@ -1,9 +1,5 @@
-module IntMachine where 
+module IntMachine where
 
-import Debug.Trace
-import Data.Bool
-import Data.List (permutations, maximum)
-import Debug.Trace (traceShowId)
 type PC = Int
 type Mem = [Int]
 type Outputs = [Int]
@@ -47,12 +43,12 @@ runIncremental :: Mem -> StepResult
 runIncremental initialMem = step 0 0 initialMem [] []
 
 step :: PC -> RelativeBase -> Mem -> Inputs -> Outputs -> StepResult
-step pc base mem inputs outputs = if ins == halted then Done (mem, outputs) else 
+step pc base mem inputs outputs = if ins == halted then Done (mem, outputs) else
      case opcode of
             Add         -> step (pc+4)      base        (op (+))  inputs    outputs
             Multiply    -> step (pc+4)      base        (op (*))  inputs    outputs
-            Input       -> if null inputs 
-                            then NeedsMoreInput outputs (\newInput -> step pc base mem newInput []) 
+            Input       -> if null inputs
+                            then NeedsMoreInput outputs (\newInput -> step pc base mem newInput [])
                             else step (pc+2) base mem' inputs' outputs
             Output      -> step (pc+2)      base        mem       inputs    outputs'
             JumpIfTrue  -> step jumpIfTrue  base        mem       inputs    outputs

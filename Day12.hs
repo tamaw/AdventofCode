@@ -21,11 +21,11 @@ newtype Moon = Moon (Position, Velocity)
     deriving Show
 
 applyGravity :: [Moon] -> Moon -> Moon
-applyGravity ms m = foldl ag m ms 
-    where 
+applyGravity ms m = foldl ag m ms
+    where
         ag :: Moon -> Moon -> Moon
         ag (Moon(p1@(Position(x1, y1, z1)), Velocity(vx, vy, vz))) (Moon(Position (x2, y2, z2), _)) = Moon (p1, Velocity(vx + x', vy + y', vz + z'))
-            where 
+            where
                 x' = applyGravityTo x1 x2
                 y' = applyGravityTo y1 y2
                 z' = applyGravityTo z1 z2
@@ -67,15 +67,14 @@ part2 originalMoons = (countX, countY, countZ, lcm countX (lcm countY countZ) )
         moonsZ = map (\(Moon(Position(_, _, z),_)) -> z)
 
 -- updateposition
-stepOnce ::  [Moon] -> Int -> [Moon]
-stepOnce ms _ = applyPosition $ allGravity ms
+stepOnce ::  [Moon] -> [Moon]
+stepOnce ms = applyPosition $ allGravity ms
 
 -- foldl :: Foldable t => (b -> a -> b) -> b -> t a -> b
-step :: [Moon] -> Int -> Int
-step mx times = sum $ map (\m -> pot m * kin m) $ foldl stepOnce mx [1..times] 
--- [Moon (Position (2,1,-3),Velocity (-3,-2,1)),Moon (Position (1,-8,0),Velocity (-1,1,3)),Moon (Position (3,-6,1),Velocity (3,2,-3)),Moon (Position (2,0,4),Velocity (1,-1,-1))]
+part1 :: [Moon] -> Int -> Int
+part1 mx times = sum $ map (\m -> pot m * kin m) $ foldl (\a b -> stepOnce a) mx [1..times]
 
--- [m | m <- []]
+-- [Moon (Position (2,1,-3),Velocity (-3,-2,1)),Moon (Position (1,-8,0),Velocity (-1,1,3)),Moon (Position (3,-6,1),Velocity (3,2,-3)),Moon (Position (2,0,4),Velocity (1,-1,-1))]
 
 pot :: Moon -> Int
 pot (Moon(Position(x,y,z), _)) = abs x + abs y + abs z
@@ -89,16 +88,6 @@ moons = [
     Moon (Position(1, 2, 1), Velocity(0, 0, 0)),
     Moon (Position(-15, -3, 13), Velocity(0, 0, 0)),
     Moon (Position(3, 7, -4), Velocity(0, 0, 0))]
-
---     <x=3, y=2, z=-6>
--- <x=-13, y=18, z=10>
--- <x=-8, y=-1, z=13>
--- <x=5, y=10, z=4>
-jack = [
-    Moon (Position(3, 2, -6), Velocity(0, 0, 0)),
-    Moon (Position(-13, 18, 10), Velocity(0, 0, 0)),
-    Moon (Position(-8, -1, 13), Velocity(0, 0, 0)),
-    Moon (Position(5, 10, 4), Velocity(0, 0, 0))]
 
 example :: [Moon]
 example = [
